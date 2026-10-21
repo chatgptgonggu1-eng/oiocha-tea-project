@@ -31,6 +31,8 @@ app=app.replace("history.pushState({},'', '/garden/'+b.id)","history.replaceStat
 app=app.replace("location.origin+'/garden/'+boardId","location.href.split('#')[0]+'#garden/'+boardId");
 html=html.replace('<link rel="stylesheet" href="/style.css">',`<style>${css}</style>`);
 html=html.replace('<script type="module" src="/app.js"></script>',`<script type="module">${app}</script>`);
+const bottle=readFileSync(path.join(root,'public/assets/oiocha-bottle.png')).toString('base64');
+html=html.replace('src="/assets/oiocha-bottle.png"',`src="data:image/png;base64,${bottle}"`);
 html=html.replace('<body>','<body><div style="position:fixed;z-index:5;bottom:0;left:0;right:0;text-align:center;background:#f8fae8;color:#315b37;padding:5px;font:11px sans-serif">디자인 미리보기 · 메시지는 이 브라우저에만 저장됩니다. 여러 기기 공유는 서버 실행 후 사용할 수 있어요.</div>');
 html=html.replace('href="/" aria-label="오이오차 홈"','href="#" onclick="location.hash=\'\';location.reload();return false" aria-label="오이오차 홈"');
 writeFileSync(path.join(root,'index.html'),html);

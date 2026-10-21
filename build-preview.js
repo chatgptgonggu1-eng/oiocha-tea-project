@@ -3,7 +3,7 @@ import {fileURLToPath} from 'node:url';
 import path from 'node:path';
 const root=path.dirname(fileURLToPath(import.meta.url));
 let html=readFileSync(path.join(root,'public/index.html'),'utf8');
-let css=readFileSync(path.join(root,'public/style.css'),'utf8').replace(/@import url\([^;]+;/,'');
+let css=readFileSync(path.join(root,'public/style.css'),'utf8').replace(/@import url\([^)]*\);/,'');
 const image=readFileSync(path.join(root,'public/assets/tea-water.png')).toString('base64');
 css=css.replace("url('/assets/tea-water.png')",`url('data:image/png;base64,${image}')`);
 let app=readFileSync(path.join(root,'public/app.js'),'utf8');

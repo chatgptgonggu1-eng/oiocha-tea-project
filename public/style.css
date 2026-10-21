@@ -7,3 +7,6 @@
 @keyframes bottle-float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-12px) rotate(2deg)}}
 .intro-bottle{animation:bottle-float 6s ease-in-out infinite;transform-origin:50% 65%}
 @media(prefers-reduced-motion:reduce){.intro-bottle{animation:none;transform:none}}
+
+.new-board-button{padding:12px 18px;min-height:44px;font-size:12px;white-space:nowrap}.new-board-button span{margin-left:12px}
+@media(max-width:700px){.new-board-button{padding:10px 12px;font-size:10px}.new-board-button span{display:none}}

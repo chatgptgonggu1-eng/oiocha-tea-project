@@ -1,0 +1,5 @@
+.git
+data
+artifacts
+node_modules
+*.html

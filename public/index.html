@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#315b37"><title>오이오차 · 마음이 머무는 찻물</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<svg width="0" height="0" aria-hidden="true" style="position:absolute"><defs>
+<linearGradient id="green" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d7ed94"/><stop offset=".5" stop-color="#b3d86d"/><stop offset="1" stop-color="#78a84e"/></linearGradient>
+<pattern id="veins" width="22" height="22" patternUnits="userSpaceOnUse"><path d="M0 22 22 0M0 0 22 22" stroke="#688f3a" stroke-opacity=".12" fill="none"/></pattern>
+<path id="leaf" d="M22 145C15 55 78 17 184 20C185 113 125 176 22 145Z"/>
+<path id="heart" d="M100 161C65 135 12 100 21 57C30 16 76 17 100 49C124 17 170 16 179 57C188 100 135 135 100 161Z"/>
+<path id="star" d="m100 12 27 51 57 10-40 42 5 58-49-27-49 27 5-58-40-42 57-10Z"/>
+<path id="clover" d="M100 96C47 104 19 64 42 35C65 7 108 36 100 96ZM104 96C96 43 136 15 165 38C193 61 164 104 104 96ZM104 100C157 92 185 132 162 161C139 189 96 160 104 100ZM100 100C108 153 68 181 39 158C11 135 40 92 100 100ZM99 96Q107 142 97 184L102 185Q112 141 104 96Z"/>
+<path id="rabbit" d="M65 84C19 8 65-8 86 77L111 77C128-8 178 2 144 90C201 148 132 190 93 177C36 180 13 124 65 84Z"/>
+</defs></svg>
+<main class="pond">
+<header><a class="brand" href="/" aria-label="오이오차 홈"><span class="brand-icon">葉</span><span>오이오차<small>마음을 띄우는 녹차 한 잔</small></span></a><nav><button class="text-button" id="new-board" hidden>새 찻잔 만들기 <span>↗</span></button><button class="share" id="share">↗ <span>링크 공유하기</span></button></nav></header>
+<div class="edition">OIOCHA · LETTER POND <span>한 잎에 담은 진심</span></div>
+<section class="intro" id="intro"><span class="eyebrow">A LITTLE LEAF, A LOT OF LOVE</span><h1>마음 한 잎,<br><em>너에게 띄워.</em></h1><p>말로 다 하지 못했던 마음도 괜찮아.<br>초록빛 찻물 위에 살며시 남겨 주세요.</p><button class="primary" id="create">새 찻잔 만들기 <span>↗</span></button><div class="intro-foot">친구에게, 소중한 사람에게, 그리고 나에게.</div></section>
+<section class="board-heading" id="board-heading" hidden><span class="eyebrow">A GARDEN OF LITTLE WORDS</span><h1 id="board-title"></h1><p id="board-description"></p></section>
+<div id="leaves" class="leaves" aria-label="녹찻잎 메시지"></div>
+<div class="empty" id="empty" hidden><span>〰</span><p>아직 고요한 찻물이에요.<br>첫 번째 마음을 띄워 볼까요?</p></div>
+<div class="bottom-bar"><div class="pond-info"><span class="live-dot"></span><span id="count">천천히, 마음이 우러나는 곳</span></div><button class="primary" id="write" hidden>＋ 녹찻잎 메시지 남기기</button><span class="hint" id="hint">초록빛으로 전하는 작은 안부</span></div>
+<footer><span>오이오차와 함께하는 마음의 쉼표</span><span>STEEPED IN KINDNESS.</span></footer>
+</main>
+<dialog id="create-dialog"><form id="create-form"><div class="modal-top"><span class="eyebrow">YOUR OWN LITTLE POND</span><button type="button" class="close" aria-label="닫기">×</button></div><h2>누구에게 마음을 띄울까요?</h2><p class="muted">링크 하나로 함께 채우는 우리만의 찻잔.</p><label>받는 사람<input name="recipient" maxlength="30" placeholder="친구 이름 또는 나의 이름" required></label><label>찻잔 이름<input name="title" maxlength="60" placeholder="예: 지수의 오늘을 응원해" required></label><button class="primary submit" type="submit">찻잔 만들기 ↗</button><p class="fine">링크를 아는 누구나 메시지를 읽고 남기며 위치를 옮길 수 있어요.</p></form></dialog>
+<dialog id="write-dialog"><form id="write-form"><div class="modal-top"><span class="eyebrow">LEAVE A LITTLE KINDNESS</span><button type="button" class="close" aria-label="닫기">×</button></div><h2>어떤 마음을 담아볼까요?</h2><p class="muted">작은 한마디가 누군가의 하루를 향긋하게 해요.</p><label>보내는 사람<input name="name" maxlength="20" placeholder="이름 또는 별명" required></label><label>전하고 싶은 마음<textarea name="body" rows="4" maxlength="200" placeholder="따뜻한 마음을 자유롭게 남겨 주세요." required></textarea><span class="char-count"><span id="chars">0</span> / 200</span></label><fieldset><legend>마음을 담을 잎사귀</legend><div class="shape-options" id="shape-options"></div></fieldset><button class="primary submit" type="submit">찻물 위에 마음 띄우기 ↗</button></form></dialog>
+<dialog id="read-dialog"><div class="modal-top"><span class="eyebrow">A LEAF FOR YOU</span><button class="close" aria-label="닫기">×</button></div><div id="read-leaf"></div><p id="read-body"></p><p id="read-name"></p><span class="fine">당신의 하루에 초록빛 여유가 닿기를.</span></dialog>
+<dialog id="share-dialog"><div class="modal-top"><span class="eyebrow">SHARE YOUR POND</span><button class="close" aria-label="닫기">×</button></div><h2>함께 마음을 띄워요.</h2><p class="muted">아래 링크를 친구들에게 공유하고, 소중한 사람을 위한 오이오차 한 잔을 함께 완성해 보세요.</p><input id="share-url" readonly aria-label="공유 링크"><button id="copy-link" class="primary submit">링크 복사하기</button></dialog>
+<div role="status" id="toast"></div><script type="module" src="/app.js"></script>
+</body></html>

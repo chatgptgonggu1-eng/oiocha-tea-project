@@ -1,0 +1,15 @@
+# Free demo deployment. SQLite data may be lost when this instance is replaced.
+services:
+  - type: web
+    name: oiocha-letter-pond
+    runtime: node
+    plan: free
+    numInstances: 1
+    buildCommand: node --version
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 24.19.0
+      - key: NODE_ENV
+        value: production

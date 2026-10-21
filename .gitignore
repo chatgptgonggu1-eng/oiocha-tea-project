@@ -1,0 +1,7 @@
+data/*.sqlite*
+node_modules/
+playwright-report/
+test-results/
+artifacts/
+/index.html
+/oiocha-preview-*.html

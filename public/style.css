@@ -10,3 +10,28 @@
 
 .new-board-button{padding:12px 18px;min-height:44px;font-size:12px;white-space:nowrap}.new-board-button span{margin-left:12px}
 @media(max-width:700px){.new-board-button{padding:10px 12px;font-size:10px}.new-board-button span{display:none}}
+/* Give mobile product, decorative notes and actions their own layout space. */
+.intro-sample{display:none}
+.pond:not(.board-active) .intro{margin-bottom:36px}
+.pond:not(.board-active) .leaves{position:relative;inset:auto;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:32px;min-height:240px;margin:0 6% 150px;padding:20px 0}
+.pond:not(.board-active) .leaves .demo{position:relative;left:auto!important;top:auto!important;transform:none;flex:none;width:200px;height:200px}
+@media(max-width:700px){
+ .pond:not(.board-active) .intro{margin-top:55px;margin-bottom:36px}
+ .intro-sample{display:block;position:relative;height:160px;margin-bottom:24px}
+ .intro-sample .demo{left:74%!important;top:50%!important;width:140px;height:140px}
+ .pond:not(.board-active) .leaves{position:relative;inset:auto;display:flex;align-items:center;justify-content:space-around;gap:20px;min-height:210px;height:auto;margin:0 6% 150px;padding:20px 0}
+ .pond:not(.board-active) .leaves .demo:first-child{display:none}
+ .pond:not(.board-active) .leaves .demo{position:relative;left:auto!important;top:auto!important;transform:none;flex:none;width:min(38vw,160px);height:min(38vw,160px)}
+}
+
+.intro-lower-notes{display:none}
+@media(max-width:700px){
+ .intro-details{display:grid;grid-template-columns:minmax(0,1fr) min(40vw,250px);gap:8px;margin-top:24px}
+ .intro-copy{min-width:0}.intro-copy p{margin-top:0;word-break:keep-all;overflow-wrap:anywhere}
+ .intro-copy .primary{padding:15px 16px;font-size:11px;max-width:100%}.intro-copy .primary span{display:none}
+ .intro-copy .intro-foot{line-height:1.8;word-break:keep-all}
+ .intro-lower-notes{display:flex;flex-direction:column;align-items:center;gap:20px;padding-top:10px}
+ .intro-lower-notes .demo{position:relative;left:auto!important;top:auto!important;transform:none;flex:none;width:min(36vw,160px);height:min(36vw,160px)}
+ .pond:not(.board-active) .leaves{display:none}
+ .pond:not(.board-active) .intro{margin-bottom:160px}
+}

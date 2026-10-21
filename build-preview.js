@@ -3,7 +3,7 @@ import {fileURLToPath} from 'node:url';
 import path from 'node:path';
 const root=path.dirname(fileURLToPath(import.meta.url));
 let html=readFileSync(path.join(root,'public/index.html'),'utf8');
-let css=readFileSync(path.join(root,'public/style.css'),'utf8').replace(/@import url\([^)]*\);/,'');
+let css=readFileSync(path.join(root,'public/style.css'),'utf8').replace(/@import url\([^;]+;/,'');
 const image=readFileSync(path.join(root,'public/assets/tea-water.png')).toString('base64');
 css=css.replace("url('/assets/tea-water.png')",`url('data:image/png;base64,${image}')`);
 let app=readFileSync(path.join(root,'public/app.js'),'utf8');
@@ -33,7 +33,7 @@ html=html.replace('<link rel="stylesheet" href="/style.css">',`<style>${css}</st
 html=html.replace('<script type="module" src="/app.js"></script>',`<script type="module">${app}</script>`);
 const bottle=readFileSync(path.join(root,'public/assets/oiocha-bottle.png')).toString('base64');
 html=html.replace('src="/assets/oiocha-bottle.png"',`src="data:image/png;base64,${bottle}"`);
-html=html.replace('</body>','<div style="position:relative;text-align:center;background:#f8fae8;color:#315b37;padding:5px;font:11px sans-serif">디자인 미리보기 · 메시지는 이 브라우저에만 저장됩니다. 여러 기기 공유는 서버 실행 후 사용할 수 있어요.</div></body>');
+html=html.replace('<body>','<body><div style="position:fixed;z-index:5;bottom:0;left:0;right:0;text-align:center;background:#f8fae8;color:#315b37;padding:5px;font:11px sans-serif">디자인 미리보기 · 메시지는 이 브라우저에만 저장됩니다. 여러 기기 공유는 서버 실행 후 사용할 수 있어요.</div>');
 html=html.replace('href="/" aria-label="오이오차 홈"','href="#" onclick="location.hash=\'\';location.reload();return false" aria-label="오이오차 홈"');
 writeFileSync(path.join(root,'index.html'),html);
 console.log('Created standalone index.html with embedded styles, background and scripts.');

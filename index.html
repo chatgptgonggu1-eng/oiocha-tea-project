@@ -36,6 +36,15 @@
  .pond:not(.board-active) .leaves{display:none}
  .pond:not(.board-active) .intro{margin-bottom:160px}
 }
+/* Scatter the lower notes diagonally, keeping a clear lane beside the action. */
+@media(max-width:700px){
+ .intro-lower-notes{align-items:stretch;gap:0;padding-top:10px;overflow:visible}
+ .intro-lower-notes .demo{width:min(30vw,140px);height:min(30vw,140px)}
+ .intro-lower-notes .demo:first-child{align-self:flex-start;margin-left:6px}
+ .intro-lower-notes .demo:last-child{align-self:flex-end;margin-top:24px;margin-right:-6px}
+ .intro-lower-notes .demo:first-child .leaf-inner{--rotation:-13deg!important;--delay:-1.5s!important}
+ .intro-lower-notes .demo:last-child .leaf-inner{--rotation:14deg!important;--delay:-4s!important}
+}
 </style></head>
 <body>
 <svg width="0" height="0" aria-hidden="true" style="position:absolute"><defs>

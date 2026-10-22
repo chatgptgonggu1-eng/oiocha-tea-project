@@ -35,7 +35,7 @@ export function createCloudApi(config, request = globalThis.fetch.bind(globalThi
   try { result = await response.json(); } catch { throw Error('저장소 응답을 확인하지 못했어요. 잠시 후 다시 시도해 주세요.'); }
   if (!response.ok) {
    if (result.code === 'PGRST202' || result.code === '42501') throw Error('온라인 저장 설정이 아직 완료되지 않았어요. 운영자에게 문의해 주세요.');
-   if (['22023','P0001','P0002'].includes(result.code)) throw Error(result.message);
+   if (['22023','P0001','P0002'].includes(result.code)) throw Object.assign(Error(result.message),{code:result.code});
    throw Error('저장하지 못했어요. 잠시 후 다시 시도해 주세요.');
   }
   if (!result || typeof result !== 'object') throw Error('저장소 응답을 확인하지 못했어요.');

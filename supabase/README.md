@@ -39,3 +39,10 @@ Basic spam controls are enforced inside transactions: max 20 messages/minute/cup
 After SQL installation and GitHub deployment, manually create a cup, post a message, copy its link into a separate device/incognito session, write a second message, verify it appears within 3 seconds on the first device, reload both, and open a different cup to verify isolation. Live readiness is pending until these checks pass.
 
 If RPC reports `PGRST202`, setup.sql has not been run or the schema cache is stale; the script issues `NOTIFY pgrst, 'reload schema'`. Do not remove RLS or grant direct table access to work around an incomplete setup. If keys or network access fail, resolve the project settings rather than using a service_role key in a browser.
+
+
+## Remembering the creator's cup in this browser
+
+`oiocha-created-board-v1` in localStorage holds only the UUID returned after a successful **create** request. Basic-address visits restore that cup with `history.replaceState`. Explicit `#garden/<UUID>` or legacy `/garden/<UUID>` links take precedence and never overwrite the remembered cup. Merely visiting or writing in a friend's cup does not mark it as created here. When multiple cups are created, the most recently created cup is remembered. Styling is unchanged.
+
+This is navigation convenience, not authentication or proof of ownership. Old creator information cannot be inferred safely from previously visited links and is not backfilled. The browser record does not travel to other devices and is lost on data clearing or a private browsing session ending. Storage exceptions do not prevent cup creation or sharing; a reminder asks the creator to preserve the link. A confirmed missing saved cup (`P0002`) clears only that stale local reference and shows the introductory screen; network failures preserve the record. Database records and the old demo's localStorage are never deleted by this feature.

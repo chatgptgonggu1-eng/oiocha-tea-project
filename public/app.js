@@ -3,7 +3,16 @@ const cloudApi = createCloudApi(cloudConfig);
 const $=s=>document.querySelector(s);
 const labels={leaf:'잎사귀',heart:'하트',star:'별',clover:'네잎클로버',rabbit:'토끼'};
 const svg=shape=>`<svg class="leaf-art" viewBox="0 0 200 190" aria-hidden="true"><use href="#${shape}" fill="url(#green)" stroke="#8bab50" stroke-width=".6"/><use href="#${shape}" fill="url(#veins)"/>${shape==='leaf'?'<path d="M25 145Q90 99 177 24M60 119 55 76M90 95 95 52M90 95 134 105" stroke="#789b45" stroke-width="1" fill="none" opacity=".4"/>':''}</svg>`;
-let boardId=location.hash.match(/^#garden\/([\w-]+)$/)?.[1] || location.pathname.match(/^\/garden\/([\w-]+)$/)?.[1],messages=[],board,dragging=false,toastTimer;
+const ownBoardKey='oiocha-created-board-v1';
+const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+function savedOwnBoard(){try{const id=localStorage.getItem(ownBoardKey);return uuid.test(id||'')?id:undefined;}catch{return undefined;}}
+function rememberOwnBoard(id){try{localStorage.setItem(ownBoardKey,id);return true;}catch{return false;}}
+const linkedBoard=location.hash.match(/^#garden\/([\w-]+)$/)?.[1] || location.pathname.match(/^\/garden\/([\w-]+)$/)?.[1];
+const rememberedOwnBoard=!linkedBoard&&!location.hash?savedOwnBoard():undefined;
+let restoringOwnBoard=!!rememberedOwnBoard;
+let boardId=linkedBoard||rememberedOwnBoard,messages=[],board,dragging=false,toastTimer;
+if(restoringOwnBoard){try{history.replaceState({},'','#garden/'+boardId);}catch{}}
+
 function toast(text){$('#toast').textContent=text;$('#toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),4000);}
 async function api(url,options){return cloudApi(url,options);}
 function open(id){const d=$(id);d.showModal();setTimeout(()=>d.querySelector('input:not([type=radio]),textarea,.close')?.focus(),0);}
@@ -14,7 +23,7 @@ $('#write').onclick=()=>open('#write-dialog');
 $('#shape-options').innerHTML=Object.entries(labels).map(([key,label],i)=>`<label class="shape-choice"><input type="radio" name="shape" value="${key}" ${i===0?'checked':''}><span class="choice-art">${svg(key)}</span>${label}</label>`).join('');
 $('#write-form textarea').oninput=e=>$('#chars').textContent=e.target.value.length;
 async function submit(form,fn){const button=form.querySelector('.submit');button.disabled=true;try{await fn();}catch(e){toast(e.message);let error=form.querySelector('.form-error');if(!error){error=document.createElement('p');error.className='form-error';error.setAttribute('role','alert');error.style.cssText='color:#8e3f2f;font-size:12px;line-height:1.6';form.append(error);}error.textContent=e.message;}finally{button.disabled=false;}}
-$('#create-form').onsubmit=e=>{e.preventDefault();submit(e.target,async()=>{const f=new FormData(e.target);const b=await api('/api/boards',{method:'POST',body:JSON.stringify(Object.fromEntries(f))});boardId=b.id;try{history.pushState({},'', '#garden/'+b.id);}catch{}await enterBoard();$('#create-dialog').close();open('#write-dialog');});};
+$('#create-form').onsubmit=e=>{e.preventDefault();submit(e.target,async()=>{const f=new FormData(e.target);const b=await api('/api/boards',{method:'POST',body:JSON.stringify(Object.fromEntries(f))});boardId=b.id;restoringOwnBoard=false;const remembered=rememberOwnBoard(b.id);try{history.pushState({},'', '#garden/'+b.id);}catch{}await enterBoard();$('#create-dialog').close();open('#write-dialog');if(!remembered)toast('이 브라우저에 찻잔 링크를 기억하지 못했어요. 링크를 따로 보관해 주세요.');});};
 $('#write-form').onsubmit=e=>{e.preventDefault();submit(e.target,async()=>{const f=new FormData(e.target);await api(`/api/boards/${boardId}/messages`,{method:'POST',body:JSON.stringify({...Object.fromEntries(f),x:.15+Math.random()*.7,y:.15+Math.random()*.7})});$('#write-dialog').close();e.target.reset();$('#chars').textContent='0';await load();toast('당신의 마음 한 잎이 도착했어요.');});};
 // Sandboxed document previews can allow scripts but prohibit native form submission.
 // Invoke the same validated actions directly from ordinary buttons instead.
@@ -36,9 +45,12 @@ el.onkeydown=async e=>{const keys={ArrowLeft:[-.025,0],ArrowRight:[.025,0],Arrow
 return el;}
 function render(){const focused=document.activeElement?.dataset.id;$('#leaves').replaceChildren(...messages.map(m=>note(m)));if(focused)Array.from($('#leaves').children).find(n=>n.dataset.id===focused)?.focus({preventScroll:true});$('#empty').hidden=messages.length>0;$('#count').textContent=`${messages.length}개의 마음이 떠 있어요`;}
 let lastData='';async function load(){if(dragging)return;const b=await api('/api/boards/'+boardId);if(dragging)return;board=b;$('#board-title').textContent=b.title;$('#board-description').textContent=b.recipient+'에게 전하는 초록빛 응원';document.title=b.title+' · 오이오차';const json=JSON.stringify(b.messages);if(json!==lastData){messages=b.messages;render();lastData=json;}else if(!messages.length){$('#empty').hidden=false;$('#count').textContent='0개의 마음이 떠 있어요';}}
-async function enterBoard(){lastData='';messages=[];$('#leaves').replaceChildren();$('#new-board').hidden=false;$('#share').hidden=false;$('.pond').classList.add('board-active');$('#intro').hidden=true;$('.edition').hidden=true;$('#board-heading').hidden=false;$('#write').hidden=false;$('#hint').textContent='잎사귀를 끌어 옮기거나 눌러 읽어 보세요';try{await load();}catch(e){$('#empty').hidden=false;$('#empty').textContent=e.message;$('#write').hidden=true;toast(e.message);}}
-if(boardId){await enterBoard();}
-else{const demos=[{shape:'leaf',name:'마음을 담아',body:'오늘도 너의 편이야.',x:.73,y:.2},{shape:'heart',name:'다정한 한마디',body:'너의 모든 순간을 응원해 ♡',x:.86,y:.66},{shape:'clover',name:'작은 행운',body:'좋은 일이 찾아올 거야.',x:.59,y:.83}];demos.forEach(m=>$('#leaves').append(note(m,true)));}
+async function enterBoard(){lastData='';messages=[];$('#leaves').replaceChildren();$('#new-board').hidden=false;$('#share').hidden=false;$('.pond').classList.add('board-active');$('#intro').hidden=true;$('.edition').hidden=true;$('#board-heading').hidden=false;$('#write').hidden=false;$('#hint').textContent='잎사귀를 끌어 옮기거나 눌러 읽어 보세요';try{await load();}catch(e){if(restoringOwnBoard&&e.code==='P0002'){try{if(localStorage.getItem(ownBoardKey)===boardId)localStorage.removeItem(ownBoardKey);}catch{}boardId=undefined;restoringOwnBoard=false;try{history.replaceState({},'',location.pathname+location.search);}catch{}showHome();toast('이전에 만든 찻잔을 찾을 수 없어요. 새 찻잔을 만들어 주세요.');return;}$('#empty').hidden=false;$('#empty').textContent=e.message;$('#write').hidden=true;toast(e.message);}}
+function showHome(){
+ $('.pond').classList.remove('board-active');$('#intro').hidden=false;$('.edition').hidden=false;$('#board-heading').hidden=true;$('#write').hidden=true;$('#new-board').hidden=true;$('#share').hidden=true;$('#empty').hidden=true;$('#leaves').replaceChildren();document.title='오이오차 · 마음이 머무는 찻물';
+ const demos=[{shape:'leaf',name:'마음을 담아',body:'오늘도 너의 편이야.',x:.73,y:.2},{shape:'heart',name:'다정한 한마디',body:'너의 모든 순간을 응원해 ♡',x:.86,y:.66},{shape:'clover',name:'작은 행운',body:'좋은 일이 찾아올 거야.',x:.59,y:.83}];demos.forEach(m=>$('#leaves').append(note(m,true)));
+}
+if(boardId){await enterBoard();}else{showHome();}
 
 setInterval(()=>{if(boardId&&!document.hidden)load().catch(()=>{});},3000);
 

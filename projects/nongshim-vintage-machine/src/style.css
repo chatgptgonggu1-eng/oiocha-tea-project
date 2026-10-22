@@ -2,3 +2,17 @@
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 
 .outside-reset{min-height:44px}.modal-close{width:44px;height:38px}
+/* Warm shelf lights, source-photo silhouettes, and an enclosed delivery tray. */
+.product-bay{background:#e9dfc4}
+.product-photo{position:relative;background:radial-gradient(ellipse at 50% 0,#f5e7b5 0,#eee4c8 48%,#e7dec8 100%);padding-top:23px}
+.shelf-light{position:absolute;left:50%;top:7px;transform:translateX(-50%);width:31px;height:5px;border-radius:50%;background:#f8d980;box-shadow:0 5px 10px 2px #eaca7150}
+.product-cutout{display:block;width:100%;height:100%;overflow:visible;fill:none;stroke:none}
+.selected .product-cutout{opacity:1}
+.tray{overflow:hidden;isolation:isolate}
+.tray-flap{position:absolute;z-index:2;top:0;left:0;right:0;height:12px;background:#211f1b;pointer-events:none}
+.dispensed-product{z-index:1}
+.receipt-open{top:3px;left:50%;transform:translateX(-50%);width:45%;height:35px;min-height:35px;padding:0 3px;align-items:center;gap:6px;font-size:10px}
+.receipt-open:hover{background:#792a2308;border-radius:3px}
+.receipt-topline>span{font-size:8px;letter-spacing:0}
+.printer-paper-mask.printed{cursor:pointer}
+@media(max-width:540px){.product-photo{padding-top:21px}.shelf-light{width:26px;height:4px;top:7px}.receipt-open{left:50%;width:45%;font-size:9px}}

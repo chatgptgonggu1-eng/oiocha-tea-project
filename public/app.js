@@ -1,9 +1,11 @@
+import { createCloudApi, cloudConfig } from './cloud-storage.js';
+const cloudApi = createCloudApi(cloudConfig);
 const $=s=>document.querySelector(s);
 const labels={leaf:'잎사귀',heart:'하트',star:'별',clover:'네잎클로버',rabbit:'토끼'};
 const svg=shape=>`<svg class="leaf-art" viewBox="0 0 200 190" aria-hidden="true"><use href="#${shape}" fill="url(#green)" stroke="#8bab50" stroke-width=".6"/><use href="#${shape}" fill="url(#veins)"/>${shape==='leaf'?'<path d="M25 145Q90 99 177 24M60 119 55 76M90 95 95 52M90 95 134 105" stroke="#789b45" stroke-width="1" fill="none" opacity=".4"/>':''}</svg>`;
-let boardId=location.pathname.match(/^\/garden\/([\w-]+)$/)?.[1],messages=[],board,dragging=false,toastTimer;
+let boardId=location.hash.match(/^#garden\/([\w-]+)$/)?.[1] || location.pathname.match(/^\/garden\/([\w-]+)$/)?.[1],messages=[],board,dragging=false,toastTimer;
 function toast(text){$('#toast').textContent=text;$('#toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),4000);}
-async function api(url,options){const r=await fetch(url,{...options,headers:{'Content-Type':'application/json'}});const data=await r.json();if(!r.ok)throw Error(data.error||'요청에 실패했어요.');return data;}
+async function api(url,options){return cloudApi(url,options);}
 function open(id){const d=$(id);d.showModal();setTimeout(()=>d.querySelector('input:not([type=radio]),textarea,.close')?.focus(),0);}
 document.querySelectorAll('.close').forEach(b=>b.onclick=()=>b.closest('dialog').close());
 document.querySelectorAll('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close();}}));
@@ -12,7 +14,7 @@ $('#write').onclick=()=>open('#write-dialog');
 $('#shape-options').innerHTML=Object.entries(labels).map(([key,label],i)=>`<label class="shape-choice"><input type="radio" name="shape" value="${key}" ${i===0?'checked':''}><span class="choice-art">${svg(key)}</span>${label}</label>`).join('');
 $('#write-form textarea').oninput=e=>$('#chars').textContent=e.target.value.length;
 async function submit(form,fn){const button=form.querySelector('.submit');button.disabled=true;try{await fn();}catch(e){toast(e.message);let error=form.querySelector('.form-error');if(!error){error=document.createElement('p');error.className='form-error';error.setAttribute('role','alert');error.style.cssText='color:#8e3f2f;font-size:12px;line-height:1.6';form.append(error);}error.textContent=e.message;}finally{button.disabled=false;}}
-$('#create-form').onsubmit=e=>{e.preventDefault();submit(e.target,async()=>{const f=new FormData(e.target);const b=await api('/api/boards',{method:'POST',body:JSON.stringify(Object.fromEntries(f))});boardId=b.id;try{history.pushState({},'', '/garden/'+b.id);}catch{}await enterBoard();$('#create-dialog').close();open('#write-dialog');});};
+$('#create-form').onsubmit=e=>{e.preventDefault();submit(e.target,async()=>{const f=new FormData(e.target);const b=await api('/api/boards',{method:'POST',body:JSON.stringify(Object.fromEntries(f))});boardId=b.id;try{history.pushState({},'', '#garden/'+b.id);}catch{}await enterBoard();$('#create-dialog').close();open('#write-dialog');});};
 $('#write-form').onsubmit=e=>{e.preventDefault();submit(e.target,async()=>{const f=new FormData(e.target);await api(`/api/boards/${boardId}/messages`,{method:'POST',body:JSON.stringify({...Object.fromEntries(f),x:.15+Math.random()*.7,y:.15+Math.random()*.7})});$('#write-dialog').close();e.target.reset();$('#chars').textContent='0';await load();toast('당신의 마음 한 잎이 도착했어요.');});};
 // Sandboxed document previews can allow scripts but prohibit native form submission.
 // Invoke the same validated actions directly from ordinary buttons instead.
@@ -21,7 +23,7 @@ for(const form of [$('#create-form'),$('#write-form')]){
  const button=form.querySelector('.submit');button.type='button';button.onclick=run;
  form.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.tagName==='INPUT'){e.preventDefault();if(!button.disabled)run();}});
 }
-$('#share').onclick=async()=>{if(!boardId){toast('먼저 찻잔을 만들어 주세요.');open('#create-dialog');return;}$('#share-url').value=location.origin+'/garden/'+boardId;open('#share-dialog');};
+$('#share').onclick=async()=>{if(!boardId){toast('먼저 찻잔을 만들어 주세요.');open('#create-dialog');return;}$('#share-url').value=location.origin+location.pathname+'#garden/'+boardId;open('#share-dialog');};
 $('#copy-link').onclick=async()=>{try{await navigator.clipboard.writeText($('#share-url').value);toast('링크를 복사했어요. 친구에게 보내 주세요.');$('#share-dialog').close();}catch{$('#share-url').select();toast('위 링크를 길게 누르거나 Ctrl+C로 복사해 주세요.');}};
 function view(m){$('#read-leaf').innerHTML=svg(m.shape);$('#read-body').textContent=m.body;$('#read-name').textContent='From. '+m.name;open('#read-dialog');}
 function note(m,demo=false){const el=document.createElement('button');el.className='note'+(demo?' demo':'');el.dataset.shape=m.shape;el.dataset.id=m.id||'';el.setAttribute('aria-label',m.name+'님의 메시지: '+m.body);el.style.left=(m.x*100)+'%';el.style.top=(m.y*100)+'%';el.style.setProperty('--rotation',((m.x*19)%15-7)+'deg');el.style.setProperty('--delay',(-m.y*10)+'s');el.innerHTML=`<div class="leaf-inner">${svg(m.shape)}<div class="note-copy"><span class="excerpt"></span><small></small></div></div>`;el.querySelector('.excerpt').textContent=m.body;el.querySelector('small').textContent=m.name;
@@ -39,3 +41,5 @@ if(boardId){await enterBoard();}
 else{const demos=[{shape:'leaf',name:'마음을 담아',body:'오늘도 너의 편이야.',x:.73,y:.2},{shape:'heart',name:'다정한 한마디',body:'너의 모든 순간을 응원해 ♡',x:.86,y:.66},{shape:'clover',name:'작은 행운',body:'좋은 일이 찾아올 거야.',x:.59,y:.83}];demos.forEach(m=>$('#leaves').append(note(m,true)));}
 
 setInterval(()=>{if(boardId&&!document.hidden)load().catch(()=>{});},3000);
+
+window.addEventListener('popstate',()=>location.reload());

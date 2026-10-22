@@ -1,10 +1,10 @@
 # 오이오차 · 마음이 머무는 찻물
 
-녹찻물 위에 메시지를 띄우는 롤링페이퍼입니다. 기존 디자인을 유지하면서 GitHub Pages에서 Supabase로 개인별 찻잔과 메시지를 저장하는 버전을 준비했습니다.
+녹찻물 위에 메시지를 띄우는 롤링페이퍼입니다. 기존 디자인을 유지하면서 GitHub Pages에서 Supabase로 개인별 찻잔과 메시지를 저장합니다.
 
 ## 온라인 저장 활성화
 
-**먼저 [Supabase 설정 SQL](supabase/setup.sql)을 해당 프로젝트의 SQL Editor에서 실행한 뒤 배포하세요.** 기존 두 테이블이 있어도 재실행할 수 있고 데이터는 삭제하지 않습니다. 기존 GitHub Pages를 정상 유지하기 위해 이 변경은 SQL 실행 확인 전까지 `supabase-storage` 브랜치에 보관합니다.
+**먼저 [Supabase 설정 SQL](supabase/setup.sql)을 해당 프로젝트의 SQL Editor에서 실행한 뒤 배포하세요.** 기존 두 테이블이 있어도 재실행할 수 있고 데이터는 삭제하지 않습니다. 사용자가 대상 프로젝트에서 SQL 실행 성공을 확인한 뒤 `main`에 공개용 코드를 반영했습니다. 실제 공개 서비스의 교차 기기 저장 확인은 별도로 진행합니다.
 
 공개 프로젝트 URL·Publishable key는 `public/cloud-storage.js`에 있습니다. Secret key, service_role, DB 비밀번호는 사용하지 않습니다. [설정·접근 권한·제한 상세](supabase/README.md)를 확인하세요.
 

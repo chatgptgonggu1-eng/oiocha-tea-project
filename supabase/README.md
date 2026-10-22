@@ -1,6 +1,6 @@
 # GitHub Pages + Supabase online storage
 
-The Supabase edition is prepared on the `supabase-storage` branch. Do not deploy the new `index.html` until `setup.sql` has been run successfully in the destination project. Existing GitHub Pages stays unchanged until activation.
+The Supabase edition is published from `main` after the user confirmed that `setup.sql` ran successfully in the destination project. The implementation is also retained on the `supabase-storage` branch. For a new destination, run setup.sql before deploying. Live cross-device validation is still required; the development environment egress proxy blocks direct requests to the Supabase hostname.
 
 ## One-time database setup
 

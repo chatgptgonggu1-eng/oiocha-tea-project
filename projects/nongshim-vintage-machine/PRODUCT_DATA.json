@@ -1,0 +1,93 @@
+{
+  "products": [
+    {
+      "id": "welchs_grape",
+      "brand": "welchs",
+      "name": "웰치스 그레이프",
+      "intro_name": "웰치스",
+      "year": 1995,
+      "year_basis": "캠페인 기획상 임시 기준연도. 웰치스 소다 국내 최초 출시연도 공식 확정 아님",
+      "image": "assets/products/welchs_grape.png",
+      "display": true,
+      "eligible": true
+    },
+    {
+      "id": "caprisun_orange",
+      "brand": "caprisun",
+      "name": "카프리썬 오렌지",
+      "intro_name": "카프리썬",
+      "year": 1998,
+      "image": "assets/products/caprisun_orange.png",
+      "display": true,
+      "eligible": true
+    },
+    {
+      "id": "caprisun_apple",
+      "brand": "caprisun",
+      "name": "카프리썬 사과",
+      "intro_name": "카프리썬",
+      "year": 1998,
+      "image": "assets/products/caprisun_apple.png",
+      "display": true,
+      "eligible": true
+    },
+    {
+      "id": "power_o2_apple_kiwi",
+      "brand": "power_o2",
+      "name": "파워오투 애플키위",
+      "intro_name": "파워오투",
+      "year": 2005,
+      "image": "assets/products/power_o2_apple_kiwi.png",
+      "display": true,
+      "eligible": true
+    },
+    {
+      "id": "power_o2_orange_lemon",
+      "brand": "power_o2",
+      "name": "파워오투 오렌지레몬",
+      "intro_name": "파워오투",
+      "year": 2005,
+      "image": "assets/products/power_o2_orange_lemon.png",
+      "display": true,
+      "eligible": true
+    },
+    {
+      "id": "oi_ocha_green_tea",
+      "brand": "oi_ocha_green",
+      "name": "오이오차 녹차",
+      "intro_name": "오이오차 녹차",
+      "year": 2010,
+      "image": "assets/products/oi_ocha_green_tea.png",
+      "display": true,
+      "eligible": true
+    },
+    {
+      "id": "caprisun_multivitamin",
+      "brand": "caprisun",
+      "name": "카프리썬 멀티비타민",
+      "intro_name": "카프리썬 멀티비타민",
+      "year": 2014,
+      "image": null,
+      "display": false,
+      "eligible": true,
+      "asset_status": "공식 정확한 제품컷 추가 필요"
+    },
+    {
+      "id": "oi_ocha_jasmine",
+      "brand": "oi_ocha_jasmine",
+      "name": "오이오차 쟈스민티",
+      "intro_name": "오이오차 쟈스민티",
+      "year": 2014,
+      "image": null,
+      "display": false,
+      "eligible": true,
+      "asset_status": "공식 정확한 제품컷 및 별도 감성 문구 추가 필요"
+    }
+  ],
+  "messages_by_brand": {
+    "caprisun": "엄마가 카프리썬 빨대를 꽂아주던 시절을 지나, 이제는 혼자서도 많은 걸 해내는 어른이 되었습니다.\n그때는 얼른 어른이 되고 싶었는데, 막상 어른이 된다는 건 생각보다 어려운 일이네요.\n오늘 하루도 잘 살아내셨습니다. 내일의 당신도 응원합니다.",
+    "oi_ocha_green": "어릴 적에는 엄마 아빠가 왜 씁쓸한 녹차를 좋아하는지 이해하지 못했습니다.\n그런데 신기하게도, 시간이 지날수록 예전에는 몰랐던 맛을 하나둘 알아가게 됩니다. 자란다는 건, 이해하지 못했던 부모님의 모습을 조금씩 이해하게 되는 일인지도 모르겠습니다.\n오늘은 어느새 주름이 깊어진 그들의 눈을 바라보며, 그동안 미처 전하지 못했던 다정한 한마디를 건네보는 건 어떨까요?",
+    "welchs": "친구들과 PC방에서 게임을 하고, 노래방에서 목이 쉬도록 노래하던 시절.\n내일도, 모레도 계속될 줄 알았던 그 시절을 어느새 훌쩍 지나왔네요.\n당연하게 여겼던 오늘도 언젠가는 그리워할 순간이 되겠지요.\n그러니 순간순간 사랑하고, 순간순간 행복합시다.",
+    "power_o2": "친구들과 목이 터져라 응원하고, 목이 바짝 마를 때면 파워오투 한 모금으로 갈증을 달래던 체육대회 날.\n신기하게도 그날의 승패는 잘 기억나지 않는데, 친구들과 함께 웃고 뛰던 순간은 아직도 생생합니다.\n훌쩍 자란 지금은 자꾸만 숫자로 나의 가치를 증명해야 하는 것 같지만,\n돌아보면 숫자보다 선명하게 남는 건, 그 안에서 웃고 울었던 순간들일지도 모릅니다."
+  }
+}
